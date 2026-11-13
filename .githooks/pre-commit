@@ -1,0 +1,17 @@
+#!/bin/sh
+# Pre-commit: the quality gate CI runs (formatting, SwiftLint metrics, library discipline, the analyzers against
+# .ci/baselines), from the swift-ci commit CI pins, then the internal-tag check.
+#
+# Enable once per clone:   git config core.hooksPath .githooks
+# Auto-fix formatting:     swift format format -i -r Package.swift Sources Tests
+set -e
+cd "$(git rev-parse --show-toplevel)"
+
+echo "pre-commit: .ci/swift-ci run quality"
+.ci/swift-ci run quality
+
+# Block newly added TODO/FIXME and internal provenance citations. Diff-based, so it only flags regressions.
+if [ -x "$(dirname "$0")/check-tags.sh" ]; then
+    echo "pre-commit: internal-tag check (staged)"
+    "$(dirname "$0")/check-tags.sh" staged
+fi

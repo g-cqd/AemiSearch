@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  merge_group:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    name: Checks
+    uses: g-cqd/swift-ci/.github/workflows/swift-ci.yml@42f34b5dcc86fce5be6b9868d5acd09ab098cb74 # swift-ci 42f34b5
+    permissions:
+      contents: write # required by the reusable workflow; this library does not publish archives
+

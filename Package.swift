@@ -17,7 +17,7 @@ let kernelSettings: [SwiftSetting] = strictSettings + [.strictMemorySafety()]
 // Aemi supplies the term dictionary (AemiInterner), the SIMD substring search (AemiKernel) and the bounded edit distance (AemiText).
 // Pinned to the revision the rest of the family pins, since SwiftPM resolves one revision per package in a graph.
 let packageDependencies: [Package.Dependency] = [
-    .package(url: "https://github.com/Aemi-Studio/aemi.git", revision: "cbaeb200acaf7da2f74168b7b16dc6a4b0a02e6c")
+    .package(url: "https://github.com/Aemi-Studio/aemi.git", revision: "bd5e4cf4441ca3ed1b424935142586ccaac0f835")
 ]
 
 let package = Package(

@@ -1,7 +1,6 @@
 // swift-tools-version: 6.4
 import PackageDescription
 
-// Same strictness as the Aemi family: Swift 6 mode, warnings as errors, the upcoming features that tighten existentials and imports.
 let strictSettings: [SwiftSetting] = [
     .swiftLanguageMode(.v6),
     .treatAllWarnings(as: .error),
@@ -11,11 +10,8 @@ let strictSettings: [SwiftSetting] = [
     .enableUpcomingFeature("MemberImportVisibility")
 ]
 
-// The index reads text from anywhere (tool output, web pages), so every unsafe construct in it must be marked `unsafe`.
 let kernelSettings: [SwiftSetting] = strictSettings + [.strictMemorySafety()]
 
-// Aemi supplies the term dictionary (AemiInterner), the SIMD substring search (AemiKernel) and the bounded edit distance (AemiText).
-// Pinned to the revision the rest of the family pins, since SwiftPM resolves one revision per package in a graph.
 let packageDependencies: [Package.Dependency] = [
     .package(url: "https://github.com/Aemi-Studio/aemi.git", revision: "bd5e4cf4441ca3ed1b424935142586ccaac0f835")
 ]
@@ -28,7 +24,6 @@ let package = Package(
     ],
     dependencies: packageDependencies,
     targets: [
-        // No Foundation: documents are UTF-8 bytes, terms are interned, scores are BM25 (roadmap of ask, t209).
         .target(
             name: "AemiSearch",
             dependencies: [
@@ -41,8 +36,6 @@ let package = Package(
     ]
 )
 
-// The benchmark over a corpus of documents (one per line of a file), dev-only:
-//   AEMISEARCH_DEV=1 swift run -c release AemiSearchBench CORPUS [QUERY...]
 if Context.environment["AEMISEARCH_DEV"] != nil {
     package.targets.append(
         .executableTarget(name: "AemiSearchBench", dependencies: ["AemiSearch"], path: "Benchmarks/AemiSearchBench")
